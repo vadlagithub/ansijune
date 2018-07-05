@@ -1,0 +1,25 @@
+---
+#  User Creation with 
+- 
+  # Target: where our play will run and options it will run with
+  hosts: linux
+ 
+  # Task: the list of tasks that will be executed within the playbook
+  tasks:
+    - name: Creating user to view! ssh AND to delete Ref Playbook!!!! 
+      user:
+        name: "{{ item.key }}"
+        comment: "{{ item.value.full_name }}"
+        state: absent        # Once created enable to to Delete them!    ********
+      with_dict: 
+        leah: 
+          full_name: Leah Spurin
+        hayley: 
+          full_name: Hayley Spurin
+        lily: 
+          full_name: Lily Spurin
+        anwen:
+          full_name: Anwen Spurin
+ 
+# Three dots indicate the end of a YAML document
+...

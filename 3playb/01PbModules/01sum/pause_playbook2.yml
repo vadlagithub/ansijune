@@ -1,0 +1,17 @@
+---
+# YAML documents begin with the document separator ---
+
+# The minus in YAML this indicates a list item.  The playbk contains a list of plays, with each play being a dict
+-
+
+  # Target:
+  hosts: centos2,ubuntu2
+
+  #Tasks:
+  tasks:
+  - name: PAUSE and PROMPT Prompt user to verify before continue
+    pause:
+      prompt: We can put any cust msg here and prompt to, press enter to continue
+
+...
+      

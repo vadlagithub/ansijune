@@ -1,0 +1,27 @@
+---
+
+# 
+
+-
+
+  # Target:
+  hosts: linux
+
+  # Task:
+  tasks:
+    - name: Exploring register
+      command: hostname -s
+      register: hostname_output
+    
+    - name: This Section Shows hostname_output
+      debug:
+        var: hostname_output
+    
+    - name: Shows hostname_output STD
+      debug:
+        var: hostname_output.stdout
+
+
+# Three dots indicate the end of a YAML document
+...
+

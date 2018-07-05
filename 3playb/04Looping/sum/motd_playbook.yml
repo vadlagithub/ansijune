@@ -1,0 +1,27 @@
+---
+# YAML documents begin with the document separator ---
+ 
+-
+ 
+  # Target: where our play will run and options it will run with
+ hosts: linux
+ 
+  # Task: the list of tasks that will be executed within the playbook
+ tasks:
+ - name: config MOTD'
+   copy:
+     content: "Welcome to {{ansible_distribution}} Linux - It's a Super OS!!\n"
+     dest: /etc/motd
+   notify: MOTD Changed
+
+    # Handlers: handlers that are executed as a notify key from a task
+  
+ handlers:
+   - name: MOTD Changed
+     debug:
+       msg: The MOTD Chnaged, To view SSH to VM!!!    
+ 
+ 
+# Three dots indicate the end of a YAML document
+...
+

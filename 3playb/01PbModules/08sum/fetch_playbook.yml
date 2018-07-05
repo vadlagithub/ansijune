@@ -1,0 +1,19 @@
+---
+
+-
+  # Traget:
+  hosts: centos
+   
+  # Task:
+  tasks:
+    - name: Fetch /etc/redhat-release (OS Realse detaisl for RedHat) from Remote
+      fetch:
+        src: /etc/redhat-release
+        dest: /tmp/redhat-release
+
+    # User Help
+    - name: User Help!!!
+      debug:
+        msg: Test it! tree //redhat-release AND cat /tmp/redhat-release/centos1/etc/redhat-release
+      when: ansible_hostname == 'centos1'  
+...

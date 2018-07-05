@@ -1,0 +1,10 @@
+---
+-
+  hosts: centos2,ubuntu2
+  
+  tasks:
+    - name: Pause our playbook for 10 sec!
+      pause:
+        seconds: 10
+
+...

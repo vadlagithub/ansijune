@@ -1,0 +1,27 @@
+---
+
+-
+  # Combining REGISTER and WHEN
+  # Target:
+  hosts: linux
+
+  # Tasks:
+  tasks:
+    - name: Exploring Register with LIST of WHEN condition for CentOS
+      command: hostname -s
+      when:
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version | int >= 5
+      register: command_register
+
+    - name: Show Register
+      debug:
+        var: command_register
+
+    - name: When changed is MET, perform PAtCH operation, so should be skipped on Ubuntus     
+      yum:
+        name: patch
+        state: present
+      when: command_register.changed
+
+...

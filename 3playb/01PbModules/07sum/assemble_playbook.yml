@@ -1,0 +1,16 @@
+---
+# YAML documents begin with the document separator ---
+
+# The minus in YAML this indicates a list item.  The playbook contains a list
+# of plays, with each play being a dictionary
+-
+
+  # Traget:
+  hosts: ubuntu-c
+  tasks:
+    - name: Assemble contents both, from config.d to sshd_config
+      assemble:
+        src: conf.d
+        dest: sshd_config
+
+...

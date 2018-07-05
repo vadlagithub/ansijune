@@ -1,0 +1,248 @@
+Script started on Sunday 06 May 2018 05:07:45 PM UTC
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ exitvi hosts.ymlls[Kcd testing..[K[3Plscd ..[3Plscd ..[3Plscd ../04ssh packt@10.0.3.40 -p 2222[Kansible all -i hosts.yml -m ping
+[0;32mvagrant | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mubuntu1 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mcentos1 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mubuntu2 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mcentos2 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ ansible all -i hosts.yml -m ping -o
+[0;32mvagrant | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mubuntu1 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mubuntu2 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mcentos2 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mcentos1 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ ls
+ansible.cfg  ansiblework.txt  centos_motd  hosts.yml  motd_playbook.yml  typescript
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ cat ansible.cfg
+[defaults]
+inventory = hosts.yml
+host_key_checking = False
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ ct[Kat centos_motd
+Hey fuu1 this from SUM folder fro Ansi Playbook Breakdown
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ cat hosts.yml
+---
+control:
+  hosts:
+    vagrant:
+      ansible_connection: local
+      ansible_user: vagrant
+ubuntu:
+  hosts:
+    ubuntu1:
+      ansible_host: 10.0.3.58
+    ubuntu2:
+      ansible_host: 10.0.3.218
+  vars:
+    ansible_user: packt
+    ansible_become: true
+    ansible_become_pass: password
+centos:
+  hosts:
+    centos1:
+      ansible_host: 10.0.3.178
+      ansible_port: 2222
+    centos2:
+      ansible_host: 10.0.3.87
+  vars:
+    ansible_user: root
+linux:
+  children:
+    ubuntu:
+    centos:
+...
+
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ cat motd_playbook.yml
+---
+# YAML documents begin with the document separator ---
+
+# The minus in YAML this indicates a list item.  The playbook contains a list 
+# of plays, with each play being a dictionary
+-
+ 
+  # Target: where our play will run and options it will run with
+  hosts: linux
+  #user: root
+  #gather_facts: false
+
+  # Variable: variables that will apply to the play, on all target systems
+  vars:
+    motd_ubuntu: "Ubuntu LXC using Handlers which condtion WHEN CONDITION haha! and adding vars to send value as jinja motd haha \n"
+    motd_centos: "CentOS LXC using Handlers which condtion WHEN CONDITION haha! and adding vars to send value as jinja motd haha \n"
+  # Task: the list of tasks that will be executed within the playbook
+  tasks:
+    - name: Configure a MOTD on CentOS (message of the day)
+      copy:
+        content: "{{ motd_centos }}"
+        dest: /etc/motd
+      notify: MOTD Changed
+      when: ansible_distribution == "CentOS"
+    
+    - name: Configure a MOTD on Ubuntu (message of the day)
+      copy:
+        content: "{{ motd_ubuntu }}"
+        dest: /etc/motd
+      notify: MOTD Changed
+      when: ansible_distribution == "Ubuntu"
+
+  # Handlers: handlers that are executed as a notify key from a task
+  handlers:
+    - name: MOTD Changed
+      debug:
+          msg: "MOTD Changed man!"
+
+  # Roles: list of roles to be imported into the play
+
+# Three dots indicate the end of a YAML document
+...
+
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ cat motd_playbook.yml[8Phosts.ymlcentos_motdansible.cfgls[Kansible all -i hosts.yml -m ping -o[Kexit[Kvi hosts.ymlls[Kcd testing..[K[3Plscd ..[3Plscd ..[3Plscd ../04ssh packt@10.0.3.40 -p 2222[Kansible all -i hosts.yml -m ping[20Pvi hosts.ymlansible all -i hosts.yml -m ping[20Pvi hosts.ymlls[Kvi hosts[1@cat[C[C[C[C[C[Cls[Kcd 03[3Plscd ..ansible all -m ping [11Pcat hostsls[Kcd 02[3Plscd 5validls[Kcd 1instls[Kcd ansimastls[Ksudo lxc-ls -fstart -n ubuntu2 -d1[C[C[Ccentos2[C[C[C1[C[C[Cls -f[Kansible --version[4Pwhich ansiblels[K[K[Ktime ansible-playbook motd_playbook.yml
+
+PLAY [linux] ******************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************
+[0;32mok: [centos1][0m
+[0;32mok: [centos2][0m
+[0;32mok: [ubuntu2][0m
+[0;32mok: [ubuntu1][0m
+
+TASK [Configure a MOTD on CentOS (message of the day)] ************************************************************************************************************************************
+[0;36mskipping: [ubuntu1][0m
+[0;36mskipping: [ubuntu2][0m
+[0;32mok: [centos1][0m
+[0;32mok: [centos2][0m
+
+TASK [Configure a MOTD on Ubuntu (message of the day)] ************************************************************************************************************************************
+[0;36mskipping: [centos2][0m
+[0;36mskipping: [centos1][0m
+[0;32mok: [ubuntu1][0m
+[0;32mok: [ubuntu2][0m
+
+PLAY RECAP ********************************************************************************************************************************************************************************
+[0;32mcentos1[0m                    : [0;32mok=2   [0m changed=0    unreachable=0    failed=0   
+[0;32mcentos2[0m                    : [0;32mok=2   [0m changed=0    unreachable=0    failed=0   
+[0;32mubuntu1[0m                    : [0;32mok=2   [0m changed=0    unreachable=0    failed=0   
+[0;32mubuntu2[0m                    : [0;32mok=2   [0m changed=0    unreachable=0    failed=0   
+
+
+real	0m7.755s
+user	0m2.272s
+sys	0m0.380s
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ [H[2J]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ diff centos_motd <(ssh root@10.0.3.178 -p 2222 'cat /etc/motd')
+1c1
+< Hey fuu1 this from SUM folder fro Ansi Playbook Breakdown
+---
+> CentOS LXC using Handlers which condtion WHEN CONDITION haha! and adding vars to send value as jinja motd haha 
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/sum[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/sum[00m$ cd ../02vadla
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ ls
+[0m[01;32mansible.cfg[0m  [01;32mcentos_motd[0m  [01;32mhosts[0m  [01;32mhosts.yml[0m  [01;32mmotd_playbook.yml[0m
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ a[Kcat motd_playbook.yml
+---
+# YAML documents begin with the document separator ---
+
+# The minus in YAML this indicates a list item.  The playbook contains a list 
+# of plays, with each play being a dictionary
+-
+ 
+  # Target: where our play will run and options it will run with
+  hosts: centos
+  user: root
+  gather_facts: false
+  # Variable: variables that will apply to the play, on all target systems
+  vars:
+    motd: "Now using Handlers man! and adding vars and to sent value as jinja motd haha \n"
+  # Task: the list of tasks that will be executed within the playbook
+  tasks:
+    - name: Configure a MOTD (message of the day)
+      copy:
+        content: "{{ motd }}"
+        dest: /etc/motd
+      notify: MOTD Changed
+
+  # Handlers: handlers that are executed as a notify key from a task
+  handlers:
+    - name: MOTD Changed
+      debug:
+          msg: "MOTD Changed man!"
+  # Roles: list of roles to be imported into the play
+
+# Three dots indicate the end of a YAML document
+...
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ cat motd_playbook.ymlls[Kcd ../02vadladiff centos_motd <(ssh root@10.0.3.178 -p 2222 'cat /etc/motd')[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[24Ptime ansible-playbook motd_playbook.yml
+
+PLAY [centos] *****************************************************************************************************************************************************************************
+
+TASK [Configure a MOTD (message of the day)] **********************************************************************************************************************************************
+[0;33mchanged: [centos1][0m
+[0;33mchanged: [centos2][0m
+
+RUNNING HANDLER [MOTD Changed] ************************************************************************************************************************************************************
+[0;32mok: [centos1] => {[0m
+[0;32m    "msg": "MOTD Changed man!"[0m
+[0;32m}[0m
+[0;32mok: [centos2] => {[0m
+[0;32m    "msg": "MOTD Changed man!"[0m
+[0;32m}[0m
+
+PLAY RECAP ********************************************************************************************************************************************************************************
+[0;33mcentos1[0m                    : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    failed=0   
+[0;33mcentos2[0m                    : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    failed=0   
+
+
+real	0m3.035s
+user	0m1.132s
+sys	0m0.140s
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ time ansible-playbook motd_playbook.yml[18Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Kcd ../02vadladiff centos_motd <(ssh root@10.0.3.178 -p 2222 'cat /etc/motd')
+1c1
+< Hey fu!!!
+---
+> Now using Handlers man! and adding vars and to sent value as jinja motd haha 
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ #Here fa[K[Kno facts gathered, and hosts are centos --------------------------[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K___________________________________________
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ ansible all -m ping
+[0;32mvagrant | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mcentos1 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mubuntu1 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mubuntu2 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+[0;32mcentos2 | SUCCESS => {[0m
+[0;32m    "changed": false, [0m
+[0;32m    "ping": "pong"[0m
+[0;32m}[0m
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ ansible all -m ping -o
+[0;32mvagrant | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mubuntu2 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mubuntu1 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mcentos2 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+[0;32mcentos1 | SUCCESS => {"changed": false, "ping": "pong"}[0m
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ sudo lxc-stop -n ubuntu2
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ sudo lxc-stop -n ubuntu2[K1
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ sudo lxc-stop -n ubuntu1[K[K[K[K[K[K[Kcentos1
+]0;vagrant@vagrant: ~/ansible/ansimast/2arch/4play/02vadla[01;32mvagrant@vagrant[00m:[01;34m~/ansible/ansimast/2arch/4play/02vadla[00m$ exit
+exit
+
+Script done on Sunday 06 May 2018 05:31:44 PM UTC

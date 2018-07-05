@@ -1,0 +1,30 @@
+---
+# YAML documents begin with the document separator ---
+ 
+# The minus in YAML this indicates a list item.  The playbook contains a list
+# of plays, with each play being a dictionary
+-
+ 
+  hosts: centos1
+  #gather_facts: true #To Enable Setion1 & Disable Section2
+
+  # Section1 #################
+  
+  tasks:
+    - name:  Section1 Test hostvars with an ansible fact and collect ansible_port, dot notation
+      debug:
+        msg: "{{ hostvars[ansible_hostname].ansible_port }}"
+
+    - name: Test groupvars
+      debug:
+        msg: "{{ ansible_user }}"
+
+
+  # Section2  ##################
+
+    - name: Section2 Test extra vars
+      debug:
+        msg: "{{ extra_vars_key }}"
+
+# Three dots indicate the end of a YAML document
+...

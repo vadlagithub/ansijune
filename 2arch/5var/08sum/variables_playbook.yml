@@ -1,0 +1,50 @@
+---
+# YAML documents begin with the document separator ---
+ 
+# The minus in YAML this indicates a list item.  The playbook contains a list
+# of plays, with each play being a dictionary
+-
+ 
+  # Target: where our play will run and options it will run with
+ 
+  # hosts: centos1 # Enable Section2 for this to work!
+  hosts: linux   # Enable to check excetion of Section3  
+  #  hosts: centos #Try this port for all wont apply!
+  gather_facts: true
+ 
+  # Variable: variables that will apply to the play, on all target systems
+  vars_prompt:
+    - name: password
+      private: true
+ 
+  # Task: the list of tasks that will be executed within the playbook
+  tasks:
+    - name: Test vars_prompt [Section1]
+      debug:
+        msg: "{{ password }}"
+
+   # - name: [Section2] Test hostvars with an ansible fact and collect ansible_port, dot notation [Section2]
+    #  debug:
+     #   msg: "{{ hostvars[ansible_hostname].ansible_port }}"
+    #- name: [Section2] Test hostvars with an ansible fact and collect ansible_port, dict notatio [section2]
+     # debug:
+      #  msg: "{{ hostvars[ansible_hostname]['ansible_port'] }}"
+
+    - name: Testing Section2 with a port excetpion for centos2 man!
+      debug:
+        msg: "{{ hostvars[ansible_hostname].ansible_port | default('22') }}"
+    - name: Testing Section2 with a port excetpion for centos2 with DOT Notation man!
+      debug:
+        msg: "{{ hostvars[ansible_hostname]['ansible_port'] | default('22') }}"
+            
+    - name: Section3 to test groupvars, if given as  ansible_user within jinja, it should fail, so using 
+            Test groupvars with an ansible fact, show that the variable is also accessible from the hostvars section hah
+      debug:
+        msg: "{{ hostvars[ansible_hostname].ansible_user }}"
+    - name: Okay, let me try above jinja here                                                                                              
+      debug:
+        msg: "{{ ansible_user }}"
+
+# Three dots indicate the end of a YAML document
+...
+

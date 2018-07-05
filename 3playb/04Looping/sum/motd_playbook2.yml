@@ -1,0 +1,35 @@
+---
+
+-
+  # MOTD Change using With_Items and WHEN
+
+  # Target:
+  hosts: linux
+  
+  # Tasks:
+  tasks:
+    - name: Configure MOTD using | with_items as Dict and WHEN for CentOS
+      copy:
+        content: " Welcome ! You're at {{ item }} !"
+        dest: /etc/motd
+      notify: MOTD Changed
+      with_items: [ "CentOS", "Ubuntu" ]
+      when: ansible_distribution == item
+
+    - name: Configure MOTD using | with_items as List and WHEN for Ubuntu Only
+      copy:
+        content: " Welcome ! You're at {{ item }} !"
+        dest: /etc/motd
+      notify: MOTD Changed
+      with_items:
+        - Ubuntu
+      when: ansible_distribution == item
+
+
+  # Handlers:
+  handlers: 
+    - name: MOTD Changed
+      debug:
+        msg: MOTD Changed, To view SSH VM!!!
+
+... 
