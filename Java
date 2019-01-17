@@ -1,0 +1,25 @@
+package AbstractionConcept;
+
+public interface Car {
+			//Always define abstract methods-no method body	//Only method declaration	//100% Abs
+			//Cannot create ojb of interface
+			//Only Final and static Vars are defined
+		
+			//DIFFERENCES
+	//Supports multiple inheritance, Abs not	//Doesn't contain Data member/Constructor, Abs Do
+	//Contains Only incomplete(Signature of member), Abs-both Abstract and Complete member
+	//Can't have Access modifier default-public, Abs can have for subs, funcs,properties
+	//Members can't be static, Abs-Only member of Complete member of abstract class can be static	//Vars by Defualt-Final
+	//Cant hv implementations
+	//Can extend Interface only, Abs class can extend another java class and implement multiple interfaces
+	
+	int wheels=5;		//final by default
+	
+	public void start();
+	public void stop();
+	public void refuel();
+	
+}
+
+
+********************
